@@ -1,17 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createFFmpeg } from '@ffmpeg/ffmpeg'
 import ReactPlayer from 'react-player';
 
 function App() {
   const [wait, setWait] = useState(false)
-  const [video, setVideo] = useState('');
+  const [video, setVideo] = useState();
 
   const ffmpg = createFFmpeg()
 
   const transcode = async () =>{
     await ffmpg.load()
-    await ffmpg.FS
+    await ffmpg.FS('readFile', video)
   }
+
+  useEffect(()=>{
+    console.log(video)
+  })
 
   return (
     <div>
@@ -20,7 +24,9 @@ function App() {
         <input type="file" onChange={(e)=>{
           setVideo(e.target.files[0])
           console.log(e.target.files[0])
-          console.log(e)
+          if (video){
+            console.log("video found")
+          }
         }}></input>
         <button type="submit" onClick={(e)=>{
           e.preventDefault()
@@ -29,7 +35,7 @@ function App() {
         }}>Submit</button>
       </form>
 
-        {wait ? <ReactPlayer url={URL.createObjectURL(video)}/> : null}
+        <video src={video} width="500" height="500"></video>
     </div>
   )
 }
