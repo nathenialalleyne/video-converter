@@ -28,12 +28,9 @@ function App() {
     } catch (err) {
       setStage("Error converting, please try again.");
       ref.current.style.visibility = "visible";
+      console.log(err);
     }
   };
-
-  useEffect(() => {
-    console.log(video);
-  });
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-slate-400 flex-col">
